@@ -2,14 +2,12 @@ from diagrams import Cluster, Diagram
 from diagrams.aws.compute import ECS
 from diagrams.aws.database import RDS
 from diagrams.aws.network import Route53
+from diagrams.k8s.infra import Node, Master
 
-with Diagram("Simple Web Service with DB Cluster", show=False):
-    dns = Route53("dns")
-    web = ECS("service")
+with Diagram("Minikube local setup diagram", show=False):
+    
+    with Cluster("Local minicube enviroment"):
+        master_node = Master("MasterNode")
+        slave_node = Node("SlaveNode")
 
-    with Cluster("DB Cluster"):
-        db_primary = RDS("primary")
-        db_primary - [RDS("replica1"),
-                     RDS("replica2")]
-
-    dns >> web >> db_primary
+    master_node >> slave_node
